@@ -1,7 +1,7 @@
 
+from dataclasses import dataclass
 
-from typing import NamedTuple
 
-
-class Coordinate(NamedTuple):
+@dataclass
+class Coordinate:
     pass
