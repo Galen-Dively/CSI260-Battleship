@@ -1,5 +1,6 @@
 from typing import override
 from random import randint
+from coordinate import Coordinate
 
 class Player:
     def __init__(self, board):
@@ -8,19 +9,43 @@ class Player:
     def get_board(self):
         return self.board
     
-    def get_move(self, other_board):
+    @property
+    def has_ships(self):
+        if self.board.ships > 1:
+            return False
+        return True
+    
+    def get_move(self, other_grid):
+        """
+        Returns the coord
+        """
         # convert ascii to number in alphabet
         print(self.board)
         move = input("Enter your move 'C3': ")
-
-        for col in self.board:
-            for row in col:
-                if self.board 
-
-        return move
+        match move[0].upper():
+            case "A":
+                y = 1
+            case "B":
+                y = 2
+            case "C":
+                y = 3
+            case "D":
+                y = 4
+            case "E":
+                y = 5
+            case "F":
+                y = 6
+            case "G":
+                y = 7
+            case "H":
+                y = 8
+        coord = Coordinate(int(y), int(move[1]))
+        return coord
     
-    @property
-    def has_ships(self):
+    def make_move(self, coord):
+        pass
+
+    def print_board(self):
         pass
 
     def print_full_board(self):
@@ -38,25 +63,4 @@ class AI(Player):
         return str(x) + str(y)
     
 
-print(Player(1).get_move())
-
-class Board:
-    def __init__(self):
-        rows, cols = (10, 10)
-        arr = [['.'] * cols] * rows
-        self.grid = arr
-
-    def __str__(self):
-        ret_str = ''
-
-        for row in self.grid:
-            for space in row:
-                ret_str += ' '+space + ' '
-            ret_str +='\n'
-        return(ret_str)
-
-
-
-board = Board()
-
-print (board.grid)
+print(Player(1).get_move(AI(1).board()))
