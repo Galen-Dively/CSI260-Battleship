@@ -4,6 +4,5 @@ from src.board import Board
 
 class Game:
     def __init__(self):
-        pass 
         self.player  = Player()
         self.ai = AI()
