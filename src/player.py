@@ -63,9 +63,9 @@ class Player:
                     temp_grid[coord.row][coord.col] = "#"
         
         # Print the board
-        header = "  " + " ".join(chr(ord('A') + i) for i in range(self.board.size))
+        header = '   ' + '  '.join(str(i + 1) for i in range(10))
         print(header)
         
         for i, row in enumerate(temp_grid):
-            row_str = f"{i+1:2d} " + " ".join(row)
+            row_str = f"{chr(ord('A') + i)}  " + "  ".join(row)
             print(row_str)
