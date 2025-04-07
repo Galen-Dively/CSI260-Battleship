@@ -8,6 +8,7 @@ class Ship:
             if orientation == 'horizontal' or orientation == 'vertical':
                 self.orientation = orientation
         except ValueError as v:
+            
             print('value must be horizontal or vertical')
 
         # check if the ship can be put on the board and also puts it on the board

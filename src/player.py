@@ -1,66 +1,71 @@
-from typing import override
-from random import randint
+from board import Board
 from coordinate import Coordinate
 
+
 class Player:
-    def __init__(self, board):
-        self.board = board
+    def __init__(self, name: str):
+        self.name = name
+        self.board = Board()
     
-    def get_board(self):
+    def get_board(self) -> Board:
         return self.board
     
     @property
-    def has_ships(self):
-        if self.board.ships > 1:
-            return False
-        return True
+    def has_ships(self) -> bool:
+        return len(self.board) > 0
     
     def get_move(self, other_grid):
+        pass
+    
+    def make_move(self, coord: Coordinate) -> str:
         """
-        Returns the coord
+        Returns "hit", "miss", or "sunk" based on the result.
         """
-        # convert ascii to number in alphabet
+        # Check for a hit
+        hit_ship = None
+        for ship in self.board.ships:
+            if ship.hit_at(coord):
+                hit_ship = ship
+                break
+        
+        if hit_ship:
+            if hit_ship.is_sunk:
+                # Update grid to mark sunken ship
+                for ship_coord in hit_ship.coordinates:
+                    self.board[ship_coord] = "S"
+                return "sunk"
+            else:
+                # Mark as hit
+                self.board[coord] = "X"
+                return "hit"
+        else:
+            # Mark as miss
+            self.board[coord] = "O"
+            return "miss"
+    
+    def print_board(self) -> None:
+        """Print the board without revealing unhit ships."""
+        print(f"{self.name}'s Board:")
         print(self.board)
-        move = input("Enter your move 'C3': ")
-        match move[0].upper():
-            case "A":
-                y = 1
-            case "B":
-                y = 2
-            case "C":
-                y = 3
-            case "D":
-                y = 4
-            case "E":
-                y = 5
-            case "F":
-                y = 6
-            case "G":
-                y = 7
-            case "H":
-                y = 8
-        coord = Coordinate(int(y), int(move[1]))
-        return coord
     
-    def make_move(self, coord):
-        pass
-
-    def print_board(self):
-        pass
-
-    def print_full_board(self):
-        # includes ships not hit
-        pass
-
-class AI(Player):
-    def __init__(self, board):
-        super().__init__(board)
-
-    @override
-    def get_move(self):
-        x = randint(1, 10)
-        y = randint(1, 10)
-        return str(x) + str(y)
-    
-
-print(Player(1).get_move(AI(1).board()))
+    def print_full_board(self) -> None:
+        """Print the board including all ships, hit or not."""
+        print(f"{self.name}'s Full Board:")
+        
+        # Create a temporary copy of the grid
+        temp_grid = [row[:] for row in self.board.grid]
+        
+        # Add all ships to the grid
+        for ship in self.board.ships:
+            for i, coord in enumerate(ship.coordinates):
+                # Only overwrite if not already hit or sunk
+                if temp_grid[coord.row][coord.col] not in ["X", "S"]:
+                    temp_grid[coord.row][coord.col] = "#"
+        
+        # Print the board
+        header = "  " + " ".join(chr(ord('A') + i) for i in range(self.board.size))
+        print(header)
+        
+        for i, row in enumerate(temp_grid):
+            row_str = f"{i+1:2d} " + " ".join(row)
+            print(row_str)
