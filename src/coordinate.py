@@ -7,15 +7,15 @@ class Coordinate:
     @classmethod
     def from_string(cls, s: str):
         """returns coord obj from string input 'A3 -> (0,2)'"""
-        col_letter = s[0].upper()
-        row_number = int(s[1:]) - 1
-        col_number = ord(col_letter) - ord('A')
+        row_letter = s[0].upper()
+        col_number = int(s[1:]) - 1
+        row_number = ord(row_letter) - ord('A')
         return cls(row_number, col_number)
 
     def __str__(self):
-        """to string method, takes coord obj and prints string rpresenetation (2,3)->'C4'"""
-        col_letter = chr(self.col + ord('A'))
-        return f"{col_letter}{self.row + 1}"
+        """to string method, takes coord obj and prints string representation (2,3)->'C4'"""
+        row_letter = chr(self.col + ord('A'))
+        return f"{row_letter}{self.row + 1}"
 
     def __eq__(self, other):
         """checks if two coords are equal"""
