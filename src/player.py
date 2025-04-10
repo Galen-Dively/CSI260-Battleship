@@ -15,7 +15,17 @@ class Player:
         return len(self.board) > 0
     
     def get_move(self, other_grid):
-        pass
+        rows = ["a","b","c","d","e","f","g","h","i","j"]
+        cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        while True:
+            move = input("Please enter your move (i.e: A4): ")
+            if move[0].lower() not in rows:
+                print("Invalid move")
+            elif int(move[1:]) not in cols:
+                print("Invalid move")
+            else:
+                return move
     
     def make_move(self, coord: Coordinate) -> str:
         """
