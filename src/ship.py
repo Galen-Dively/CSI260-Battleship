@@ -24,11 +24,7 @@ class Ship:
 
     def get_coordinates(self):
         #returns the coordinates of the ship
-        return self.coordinates
-
-    def __str__(self):    
-        # returns the string representation of the ship 
-        return 's'
+        return self.coordinate
     
     def __len__(self):
         # returns the length of the ship 
@@ -37,3 +33,13 @@ class Ship:
     def __eq__(self, other):
         # checks if the ship is equal to the other ship 
         return self.coordinates == other.coordinates
+    
+
+
+
+
+
+
+
+# sus
+# print(chr(sum(range(ord(min(str(True)))))))
