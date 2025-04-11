@@ -69,3 +69,4 @@ class Player:
         for i, row in enumerate(temp_grid):
             row_str = f"{chr(ord('A') + i)}  " + "  ".join(row)
             print(row_str)
+
