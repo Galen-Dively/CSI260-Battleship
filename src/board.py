@@ -27,12 +27,12 @@ class Board:
         self.grid[coord.row][coord.col] = value
 
 
-board = Board()
-
-board[Coordinate.from_string('B4')] = 'X'
-board[Coordinate.from_string('C3')] = 'O'
-board[Coordinate.from_string('C5')] = 'X'
-
-print(board)
-
-print(board[Coordinate.from_string('C5')])
+# board = Board()
+#
+# board[Coordinate.from_string('B4')] = 'X'
+# board[Coordinate.from_string('C3')] = 'O'
+# board[Coordinate.from_string('C5')] = 'X'
+#
+# print(board)
+#
+# print(board[Coordinate.from_string('C5')])
