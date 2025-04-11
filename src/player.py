@@ -20,7 +20,10 @@ class Player:
 
         while True:
             move = input("Please enter your move (i.e: A4): ")
-            if move[0].lower() not in rows:
+
+            if not move:
+                print("Invalid input")
+            elif move[0].lower() not in rows:
                 print("Invalid move")
             elif int(move[1:]) not in cols:
                 print("Invalid move")
