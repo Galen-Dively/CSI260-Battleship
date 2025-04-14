@@ -1,10 +1,11 @@
-import player
+import humanPlayer
+import AI
 import game
-import board
+
 
 def main():
-    player1 = player.Player("test player 1")
-    player2 = player.Player("test player 2")
+    player1 = humanPlayer.HumanPlayer("Test Player 1")
+    player2 = AI.AIPlayer("Bot Player")
     my_game = game.Game(player1, player2)
     my_game.play()
 

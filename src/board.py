@@ -4,6 +4,7 @@ import random
 
 
 class Board:
+    """board class to for each player to have, keeps track of list of ships, grids, and hits/misses"""
     def __init__(self):
         rows, cols = (10, 10)
         arr = [['.' for _ in range(cols)] for _ in range(rows)]
@@ -31,6 +32,7 @@ class Board:
 
 
     def generate_ships(self):
+        """ generates ships that fit in the board"""
         gen_ships = [5,4,3,3,2]
 
         for length in gen_ships:
