@@ -21,6 +21,7 @@ class Player:
         cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
         while True:
+
             move = input(f"{self.name}, please enter your move (i.e: A4): ")
             if len(move) < 2:
                 print("Invalid move format")

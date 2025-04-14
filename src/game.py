@@ -29,7 +29,7 @@ class Game:
         while not self._game_over:
             self.round_info()
             attack_coord = self.current_player.get_move(self.opponent.board)
-            result = self.current_player.make_move(Coordinate.from_string(attack_coord))
+            result = self.opponent.make_move(Coordinate.from_string(attack_coord))
 
             if result == "miss":
                 print(f"You missed!")
