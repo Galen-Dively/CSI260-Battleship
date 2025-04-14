@@ -6,6 +6,7 @@ class Player:
     def __init__(self, name: str):
         self.name = name
         self.board = Board()
+        self.opponent_board = None
     
     def get_board(self) -> Board:
         return self.board
@@ -14,68 +15,79 @@ class Player:
     def has_ships(self) -> bool:
         return len(self.board) > 0
     
-    def get_move(self, other_grid):
-        rows = ["a","b","c","d","e","f","g","h","i","j"]
+    def get_move(self, opponent_board):
+        self.opponent_board = opponent_board
+        rows = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
         cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
         while True:
-            move = input("Please enter your move (i.e: A4): ")
 
-            if not move:
-                print("Invalid input")
-            elif move[0].lower() not in rows:
-                print("Invalid move")
-            elif int(move[1:]) not in cols:
-                print("Invalid move")
+            move = input(f"{self.name}, please enter your move (i.e: A4): ")
+            if len(move) < 2:
+                print("Invalid move format")
+                continue
+                
+            if move[0].lower() not in rows:
+                print("Invalid row")
+            elif not move[1:].isdigit() or int(move[1:]) not in cols:
+                print("Invalid column")
             else:
                 return move
     
     def make_move(self, coord: Coordinate) -> str:
-        """
-        Returns "hit", "miss", or "sunk" based on the result.
-        """
-        # Check for a hit
+        """Returns "hit", "miss", or "sunk" based on the result."""
+        if not self.opponent_board:
+            raise ValueError("No opponent board set. Call get_move() first.")
+            
         hit_ship = None
-        for ship in self.board.ships:
-            if ship.hit_at(coord):
-                hit_ship = ship
+        for ship in self.opponent_board.ships:
+            # Check if the coordinate is in ship's coordinates (which are tuples)
+            for ship_coord in ship.coordinates:
+                if isinstance(ship_coord, tuple) and (coord.row, coord.col) == ship_coord:
+                    hit_ship = ship
+                    break
+            if hit_ship:
                 break
         
         if hit_ship:
-            if hit_ship.is_sunk:
-                # Update grid to mark sunken ship
+            self.opponent_board[coord] = "X"
+            
+            all_hit = True
+            for ship_coord in hit_ship.coordinates:
+                row, col = ship_coord if isinstance(ship_coord, tuple) else (ship_coord.row, ship_coord.col)
+                ship_coordinate = Coordinate(row, col)
+                if self.opponent_board[ship_coordinate] != "X":
+                    all_hit = False
+                    break
+                    
+            if all_hit:
                 for ship_coord in hit_ship.coordinates:
-                    self.board[ship_coord] = "S"
+                    row, col = ship_coord if isinstance(ship_coord, tuple) else (ship_coord.row, ship_coord.col)
+                    ship_coordinate = Coordinate(row, col)
+                    self.opponent_board[ship_coordinate] = "S"
                 return "sunk"
             else:
-                # Mark as hit
-                self.board[coord] = "X"
                 return "hit"
         else:
-            # Mark as miss
-            self.board[coord] = "O"
+            self.opponent_board[coord] = "O"
             return "miss"
     
     def print_board(self) -> None:
-        """Print the board without revealing unhit ships."""
         print(f"{self.name}'s Board:")
         print(self.board)
     
     def print_full_board(self) -> None:
-        """Print the board including all ships, hit or not."""
         print(f"{self.name}'s Full Board:")
         
-        # Create a temporary copy of the grid
         temp_grid = [row[:] for row in self.board.grid]
         
-        # Add all ships to the grid
         for ship in self.board.ships:
-            for i, coord in enumerate(ship.coordinates):
-                # Only overwrite if not already hit or sunk
-                if temp_grid[coord.row][coord.col] not in ["X", "S"]:
-                    temp_grid[coord.row][coord.col] = "#"
+            for coord in ship.coordinates:
+                # Handle tuple coordinates from ship class
+                row, col = coord if isinstance(coord, tuple) else (coord.row, coord.col)
+                if temp_grid[row][col] not in ["X", "S"]:
+                    temp_grid[row][col] = "#"
         
-        # Print the board
         header = '   ' + '  '.join(str(i + 1) for i in range(10))
         print(header)
         
